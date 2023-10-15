@@ -1,10 +1,5 @@
-<h1>Editing event</h1>
-
+<%= turbo_frame_tag "modal" do %>
+<%= turbo_frame_tag @event do %>
 <%= render "form", event: @event %>
-
-<br>
-
-<div>
-  <%= link_to "Show this event", @event %> |
-  <%= link_to "Back to events", events_path %>
-</div>
+<% end %>
+<% end %>

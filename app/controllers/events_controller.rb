@@ -3,7 +3,11 @@ class EventsController < ApplicationController
 
   # GET /events or /events.json
   def index
-    @events = Event.all
+    if params[:search].present?
+      @events = Event.order(:date_scheduled).where("name ILIKE ?", "%#{params[:search]}%").paginate(page: params[:page])
+    else
+      @events = Event.order(:date_scheduled).paginate(page: params[:page])
+    end
   end
 
   # GET /events/1 or /events/1.json
@@ -25,7 +29,9 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-        format.html { redirect_to event_url(@event), notice: "Event was successfully created." }
+        @events = Event.order(:date_scheduled).paginate(page: params[:page])
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("events", partial: "events", locals: { events: @events }) }
+        format.html { redirect_to events_path, notice: "Event was successfully created." }
         format.json { render :show, status: :created, location: @event }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,6 +44,7 @@ class EventsController < ApplicationController
   def update
     respond_to do |format|
       if @event.update(event_params)
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@event, partial: "event", locals: { event: @event }) }
         format.html { redirect_to event_url(@event), notice: "Event was successfully updated." }
         format.json { render :show, status: :ok, location: @event }
       else
@@ -58,13 +65,14 @@ class EventsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def event_params
-      params.require(:event).permit(:name, :date_scheduled)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def event_params
+    params.require(:event).permit(:name, :date_scheduled)
+  end
 end

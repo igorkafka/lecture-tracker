@@ -1,12 +1,11 @@
-<div id="<%= dom_id event %>">
-  <p>
-    <strong>Name:</strong>
-    <%= event.name %>
-  </p>
 
-  <p>
-    <strong>Date scheduled:</strong>
-    <%= event.date_scheduled %>
-  </p>
-
-</div>
+<%= content_tag :tr, id: dom_id(event) do %>
+<td><%= event.name %></td>
+  <td><%= event.date_scheduled.strftime("%d/%m/%Y") %></td>
+ <td>
+ </td>
+ <td class="table_action_buttons">
+  <%= link_to "Editar" , edit_event_path(event) , class: "button is-info", data: { turbo_frame: "modal" }%>
+  <%= button_to "Excluir", event, method: :delete, data: { confirm: "Are you sure?" }, class:"button is-danger" %>
+</td>
+ <% end %>

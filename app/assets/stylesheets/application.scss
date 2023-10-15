@@ -16,10 +16,27 @@
  @import "bulma";
  .modal-card {
     overflow: visible !important;
+    height: 40em;
+    width: 90%;
+ }
+
+ .modal input[type="submit"] {
+    display: none !important;
  }
  .datetimepicker.is-datetimepicker-default .datetimepicker-container {
     width: 22rem; 
 }
 .datetimepicker {
     max-width: 360px;
+}
+
+.section {
+    padding: 0rem 0rem !important; 
+}
+.table {
+    width: 100% !important;
+}
+
+.table_action_buttons > .button_to  {
+    display: inline !important;
 }

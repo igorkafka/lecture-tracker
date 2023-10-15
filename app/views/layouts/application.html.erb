@@ -4,6 +4,7 @@
     <title>LectureTracker</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link href="https://ga.jspm.io/npm:bulma-calendar@6.1.19/dist/css/bulma-calendar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.2/dist/jquery-steps.min.css">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -13,6 +14,25 @@
   </head>
 
   <body>
+    <nav class="navbar is-success" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+    
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item">
+            Documentação
+          </a>
+        </div>
+        <div class="navbar-end">
+        </div>
+      </div>
+    </nav>
     <%= yield %>
   </body>
 </html>

@@ -10,32 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_14_211007) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "events", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2023_10_15_225541) do
+  create_table "events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.date "date_scheduled", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "lectures", force: :cascade do |t|
+  create_table "lectures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
-    t.bigint "tracks_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "tracks_id"
+    t.datetime "time_scheduled"
     t.index ["tracks_id"], name: "index_lectures_on_tracks_id"
   end
 
-  create_table "tracks", force: :cascade do |t|
+  create_table "tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
-    t.bigint "events_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "events_id"
     t.index ["events_id"], name: "index_tracks_on_events_id"
   end
 
-  add_foreign_key "lectures", "tracks", column: "tracks_id"
 end

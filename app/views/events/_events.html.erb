@@ -1,0 +1,21 @@
+<%= turbo_frame_tag "events" do %>
+<table class="table">
+    <thead>
+      <tr>
+        <th><abbr title="Position">Nome</abbr></th>
+        <th>Data Programada</th>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+    <tbody>
+        <%= render @events %>
+    </tbody>
+  </table>  
+ <div class="columns is-centered">
+    <div class="column is-one-quarter">
+  <%= will_paginate @events %>
+
+  <% end %>
+</div>
+
+</div>

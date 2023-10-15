@@ -2,6 +2,7 @@
 import { Controller } from "@hotwired/stimulus"
 import bulmaCalendar from 'bulma-calendar';
 import 'jquery';
+import 'jquery-steps';
 
 export default class extends Controller {
   connect() {
@@ -9,18 +10,29 @@ export default class extends Controller {
   }
 
   open() {
+    configJquerySteps();
     configCalendar();
+    configFileUpload();
     document.getElementsByClassName("modal")[0].classList.add("is-active");
   }
 
-  close(event) {
+  close() {
     document.getElementsByClassName("modal")[0].classList.remove("is-active");
   }
   save(){
-    $("#form-event-create-update form").first().submit();
+    $('.modal input[type="submit"]').first().click();
   }
 }
 
+const configFileUpload = () => {
+  const fileInput = document.querySelector('#file-lecture[type=file]');
+  fileInput.onchange = () => {
+    if (fileInput.files.length > 0) {
+      const fileName = document.querySelector('#file-lecture-name');
+      fileName.textContent = fileInput.files[0].name;
+    }
+  }
+}
 
 const configCalendar = () => {
   const options = {
@@ -34,7 +46,6 @@ const calendars = bulmaCalendar.attach('[type="date"]', options);
 calendars.forEach(calendar => {
 	// Add listener to select event
 	calendar.on('select', date => {
-		console.log(date);
 	});
 });
 
@@ -43,7 +54,11 @@ const element = document.querySelector('#my-element');
 if (element) {
 	// bulmaCalendar instance is available as element.bulmaCalendar
 	element.bulmaCalendar.on('select', datepicker => {
-		console.log(datepicker.data.value());
 	});
 }
+}
+const configJquerySteps = () => {
+  $('#demo').steps({
+    onFinish: function () {  }
+  });
 }
