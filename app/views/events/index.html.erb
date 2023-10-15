@@ -1,0 +1,58 @@
+<%= javascript_include_tag "events", "data-turbolinks-track" => true  %>
+<p style="color: green">
+  <%= notice %>
+</p>
+
+
+<div class="container-search columns is-mobile is-centered">
+  <div class="column is-half">
+    <%= form_with url: "/search" , method: :get do |form| %>
+      <div class="field has-addons">
+        <div class="control input-search">
+          <%= form.text_field :query, class: "input", placeholder: "Digite o nome do evento" %>
+        </div>
+        <div class="control">
+          <a class="button is-info">
+            <%= form.submit "Pesquisar" , class: "button is-info" %>
+          </a>
+        </div>
+      </div>
+      <% end %>
+  </div>
+  <div class="column">
+    <%= link_to "New Evento",
+    new_event_path,
+    class: "button is-info",
+    data: { turbo_frame: "modal" } %>
+  </div>
+</div>
+
+<div id="events">
+  <% @events.each do |event| %>
+    <%= render event %>
+      <p>
+        <%= link_to "Novo Evento" , event %>
+      </p>
+      <% end %>
+</div>
+
+<div class="modal"
+id="form-event-create-update"
+data-controller="modal"
+data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close"
+>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Novo Evento</p>
+      <button class="delete" data-action="click->modal#close" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <%= turbo_frame_tag "modal" %>
+    </section>
+    <footer class="modal-card-foot buttons  is-right">
+      <button class="button is-success" data-action="click->modal#save">Salvar</button>
+      <button class="button" data-action="click->modal#close">Cancelar</button>
+    </footer>
+  </div>
+</div>

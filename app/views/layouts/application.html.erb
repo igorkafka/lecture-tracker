@@ -3,10 +3,12 @@
   <head>
     <title>LectureTracker</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://ga.jspm.io/npm:bulma-calendar@6.1.19/dist/css/bulma-calendar.min.css" rel="stylesheet">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag params[:controller] %>
     <%= javascript_importmap_tags %>
   </head>
 

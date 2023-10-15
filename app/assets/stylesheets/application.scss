@@ -13,3 +13,13 @@
  *= require_tree .
  *= require_self
  */
+ @import "bulma";
+ .modal-card {
+    overflow: visible !important;
+ }
+ .datetimepicker.is-datetimepicker-default .datetimepicker-container {
+    width: 22rem; 
+}
+.datetimepicker {
+    max-width: 360px;
+}
