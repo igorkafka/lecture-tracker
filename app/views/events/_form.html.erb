@@ -10,7 +10,7 @@
           <% if event.errors.any? %>
           <div style="color: red">
             <h2>
-              <%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:
+              <%= pluralize(event.errors.count, "error") %> erros ocorreram :
             </h2>
       
             <ul>
@@ -40,7 +40,7 @@
         <div class="step-tab-panel" data-step="step2">
           <div class="file has-name">
             <label class="file-label">
-              <input id="file-lecture" class="file-input" type="file" name="resume">
+              <input id="file-lecture" accept=".txt, .pdf" class="file-input" type="file" name="lecture_file">
               <span class="file-cta">
                 <span class="file-icon">
                   <i class="fas fa-upload"></i>

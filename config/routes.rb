@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :lectures
+  resources :lectures do
+    collection do 
+      post 'file'
+    end 
+  end 
   resources :events
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -57,8 +57,18 @@ class LecturesController < ApplicationController
     end
   end
 
-  def read_and 
-    
+  def file 
+    file_data = params[:lecture_file]
+
+    if file_data.respond_to?(:read)
+      @lines = file_data.read
+    elsif file_data.respond_to?(:path)
+      @lines = File.read(file_data.path)
+    else
+      logger.error "Bad file_data: #{@file_data.class.name}: #    
+                {@filename.inspect}"
+    end
+    formatted_lectures = Lecture.parse_lectures(@lines.split(/\r\n/))
   end
   
 

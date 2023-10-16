@@ -30,6 +30,7 @@ const configFileUpload = () => {
     if (fileInput.files.length > 0) {
       const fileName = document.querySelector('#file-lecture-name');
       fileName.textContent = fileInput.files[0].name;
+      sendLectureFile(fileInput.files[0])
     }
   }
 }
@@ -60,5 +61,35 @@ if (element) {
 const configJquerySteps = () => {
   $('#demo').steps({
     onFinish: function () {  }
+  });
+}
+
+const sendLectureFile = (file) => {
+  var myformData = new FormData();      
+  myformData.append('lecture_file',file);
+
+  $.ajax({
+    url: "/lectures/file",
+    type: "POST",
+    headers: {
+      Accept: "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+      "X-CSRF-Token": document.querySelector("meta[name=csrf-token]")?.getAttribute("content"),
+    },
+    beforeSend(xhr, options) {
+      options.data = myformData;
+      return true;
+    },
+    success: response => {
+      if (response.success) {
+        alert("File uploaded successfully");
+      }
+      else {
+        alert(response.errors.join("<br>"));
+      }
+    },
+    error: () => {
+      alert("ajax send error");
+    }
   });
 }

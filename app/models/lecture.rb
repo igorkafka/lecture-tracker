@@ -1,21 +1,25 @@
 class Lecture < ApplicationRecord
   belongs_to :event
-  def parse_lista_palestras(lista)
-    palestras = []
-    lista.each do |item|
-      horario_match = /(\d{2}:\d{2})/.match(item)
-      horario = horario_match[0] if horario_match
+  def self.parse_lectures(list)
+    lectures = []
+    list.each do |item|
+      time_scheduled_match = /(\d{2}:\d{2})/.match(item)
+      time_scheduled = time_scheduled_match[0] if time_scheduled_match
   
-      titulo_match = /([^\d]+)\s+\d{2}min/.match(item)
-      titulo = titulo_match[1].strip if titulo_match
+      title_match = /([^\d]+)\s+\d{2}min/.match(item)
+      title = title_match[1].strip if title_match
   
-      duracao_match = /(\d{2}min)/.match(item)
-      duracao = duracao_match[0] if duracao_match
+      time_duration_match = /(\d{2}min)/.match(item)
+      time_duration_match = time_duration_match[0] if time_duration_match
   
-      if horario && titulo && duracao
-        palestra = Palestra.new(horario, titulo, duracao)
-        palestras << palestra
+      if time_duration_match && title && time_scheduled
+        lecture = Lecture.new()
+        lecture.title = title
+        lecture.time_scheduled = time_scheduled
+        lecture.time_duration_match = time_duration_match
+        lectures << lecture
       end
+      lectures
     end
   end
 end
