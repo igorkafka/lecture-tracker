@@ -40,3 +40,26 @@
 .table_action_buttons > .button_to  {
     display: inline !important;
 }
+
+.lecture-panel {
+    display: flex !important;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+
+.form-track {
+    display: flex !important;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+.lecture-input {
+    width: 65%;
+}
+
+.lecture-actions {
+    justify-content: flex-end;
+    margin: 9px;
+    display: flex;
+    gap: 19px;
+}

@@ -1,5 +1,5 @@
 class Lecture < ApplicationRecord
-  belongs_to :event
+  belongs_to :track, class_name: "Track", foreign_key: "tracks_id"
   def self.parse_lectures(list)
     lectures = []
     list.each do |item|

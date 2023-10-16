@@ -1,43 +1,44 @@
 <%= form_with(model: event) do |form| %>
-    <div class="step-app" id="demo">
+  <div class="step-app" id="demo">
 
-      <ul class="step-steps">
-        <li data-step-target="step1">Evento</li>
-        <li data-step-target="step2">Palestras</li>
-      </ul>
-      <div class="step-content">
-        <div class="step-tab-panel" data-step="step1">
-          <% if event.errors.any? %>
+    <ul class="step-steps">
+      <li data-step-target="step1">Evento</li>
+      <li data-step-target="step2">Palestras</li>
+    </ul>
+    <div class="step-content">
+      <div class="step-tab-panel" data-step="step1">
+        <% if event.errors.any? %>
           <div style="color: red">
             <h2>
-              <%= pluralize(event.errors.count, "error") %> erros ocorreram :
+              <%= pluralize(event.errors.count, "error" ) %> erros ocorreram :
             </h2>
-      
+
             <ul>
               <% event.errors.each do |error| %>
                 <li>
                   <%= error.full_message %>
                 </li>
                 <% end %>
-              </ul>
-            </div>
-            <% end %>
-          <div class="field">
-            <label style="display: block" for="event_name">Nome</label>
+            </ul>
+          </div>
+          <% end %>
+            <div class="field">
+              <label style="display: block" for="event_name">Nome</label>
               <div class="control">
                 <%= form.text_field :name, class: "input" %>
               </div>
-          </div>
-    
-          <div>
-            <label style="display: block" for="event_name">Data Programada</label>
-              <%= form.date_field :date_scheduled %>
-          </div>
-          <div>
-                <%= form.submit %>
             </div>
-        </div>
-        <div class="step-tab-panel" data-step="step2">
+
+            <div>
+              <label style="display: block" for="event_name">Data Programada</label>
+              <%= form.date_field :date_scheduled %>
+            </div>
+            <div>
+              <%= form.submit %>
+            </div>
+      </div>
+      <div id="appTrack" class="step-tab-panel" data-step="step2">
+        <div class="lecture-panel" v-if="tracks.length == 0">
           <div class="file has-name">
             <label class="file-label">
               <input id="file-lecture" accept=".txt, .pdf" class="file-input" type="file" name="lecture_file">
@@ -46,22 +47,54 @@
                   <i class="fas fa-upload"></i>
                 </span>
                 <span class="file-label">
-                  Selecione um Arquivo 
+                  Selecione um Arquivo
                 </span>
               </span>
               <span id="file-lecture-name" class="file-name">
                 Screen Shot 2017-07-29 at 15.54.25.png
               </span>
             </label>
-            <p class="subtitle is-3">Ou</p>
-            <button class="button is-primary" type="button">Crie Manualmente</button>
+          </div>
+          <p class="subtitle is-3">Ou</p>
+          <button class="button is-primary" type="button"
+            @click="startManually()">Crie Manualmente</button>
+        </div v-if="tracks.length > 0">
+        <button type="button" @click="addTrack()" class="button is-info" v-if="tracks.length > 0">Adicionar
+          Track</button>
+        <div>
+
+        </div>
+        <div v-if="tracks.length > 0" class="form-track">
+          <div v-for="track in tracks">
+            <div class="lecture-actions">
+            <h3>{{track.title}}</h3>
+            <button type="button"  class="button is-info" @click="addLecture(track)">Adicionar Palestra</button>
+            <button type="button" class="button is-danger" @click="deleteTrack(track)">Excluir Track</button>
+          </div>
+            <div v-for="lecture in track.lectures" class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Horário</label>
+              </div>
+              <div class="field-body">
+                <input class="input lecture-input" v-on:keyup="lecture.time_duration = $event.target.value" :value="lecture.time_duration"></input>
+              </div>
+              <div class="field-label is-normal">
+                <label class="label">Nome</label>
+              </div>
+              <div class="field-body">
+              <input class="input lecture-input" :value="lecture.title" v-on:keyup="lecture.title = $event.target.value"></input>
+              </div>
+              <button type="button" class="button is-danger" @click="removeLecture(track)">Excluir Palestra</button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="step-footer">
-        <button data-step-action="prev" class="button is-info step-btn">Anterior</button>
-        <button data-step-action="next" class="button is-info">Próximo</button>
-        <button data-step-action="finish" class="button is-success" data-action="click->modal#save">Finalizar</button>
+        <input name="tracks" hidden :value="JSON.stringify(tracks)" >
       </div>
     </div>
-    <% end %>
+    <div class="step-footer">
+      <button data-step-action="prev" class="button is-info step-btn">Anterior</button>
+      <button data-step-action="next" class="button is-info">Próximo</button>
+      <button data-step-action="finish" class="button is-success" data-action="click->modal#save">Finalizar</button>
+    </div>
+  </div>
+  <% end %>

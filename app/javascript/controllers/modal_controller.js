@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 import bulmaCalendar from 'bulma-calendar';
 import 'jquery';
 import 'jquery-steps';
+import * as Vue from "vue"
 
 export default class extends Controller {
   connect() {
@@ -13,6 +14,7 @@ export default class extends Controller {
     configJquerySteps();
     configCalendar();
     configFileUpload();
+    configVue();
     document.getElementsByClassName("modal")[0].classList.add("is-active");
   }
 
@@ -92,4 +94,69 @@ const sendLectureFile = (file) => {
       alert("ajax send error");
     }
   });
+}
+
+const configVue = () => {
+  const app = Vue.createApp({
+    data() {
+      return {
+        tracks: []
+      }
+    },
+    methods: {
+      addTrack() {
+        this.tracks.push({title: `Track ${letraDoAlfabeto(this.tracks.length)}`, lectures: [{}]});
+      },
+      removeTrack(track) {
+        book.isFav = !book.isFav;
+        
+        // if (book.isFav) {
+        //   book.isFav = false;
+        // } else {
+        //   book.isFav = true;
+        // }
+      },
+      alterTrack(track)  {
+      },
+      addLecture(track) {
+        const index = this.tracks.indexOf(track);
+        console.log(index);
+        this.tracks[index].lectures.push({title: '',time_duration: 0});
+      },
+      deleteTrack(track) {
+        const index = this.tracks.indexOf(track);
+        this.tracks.splice(index, 1);
+      },
+      removeLecture(track) {
+        const index = this.tracks.indexOf(track);
+        this.tracks[index].lectures.splice(index, 1); // 2nd parameter means remove one item only
+      },
+      startManually() {
+        this.tracks.push({title: `Track ${letraDoAlfabeto(this.tracks.length)}`, lectures: [{}]});
+      }
+    },
+    computed: {
+      filteredBooks() {
+        return this.books.filter(book => book.isFav)
+      }
+    }
+  })
+  
+  app.mount('#appTrack')
+  
+}
+
+function letraDoAlfabeto(indice) {
+  // Verifique se o índice está dentro do intervalo válido (0 a 25)
+  if (indice >= 0 && indice <= 25) {
+    // Crie uma string com todas as letras do alfabeto
+    const alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    
+    // Use o índice para acessar a letra correspondente na string do alfabeto
+    const letra = alfabeto.charAt(indice);
+    
+    return letra;
+  } else {
+    return "Índice fora do intervalo válido";
+  }
 }

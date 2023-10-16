@@ -4,7 +4,7 @@ class EventsController < ApplicationController
   # GET /events or /events.json
   def index
     if params[:search].present?
-      @events = Event.order(:date_scheduled).where("name ILIKE ?", "%#{params[:search]}%").paginate(page: params[:page])
+      @events = Event.order(:date_scheduled).where("name LIKE ?", "%#{params[:search]}%").paginate(page: params[:page])
     else
       @events = Event.order(:date_scheduled).paginate(page: params[:page])
     end
@@ -27,8 +27,22 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
 
+    
+
     respond_to do |format|
       if @event.save
+        @tracks = JSON.parse(params[:tracks])
+        @tracks.each do |track|
+          @new_track = Track.new(title: track['title'])
+          @new_track.event = @event
+          if  @new_track.save          
+          track['lectures'].each do |lecture|
+            @lecture = Lecture.new(time_duration: lecture['time_duration'], title: lecture['title'])
+            @lecture.track = @new_track
+            @lecture.save
+          end
+        end
+        end
         @events = Event.order(:date_scheduled).paginate(page: params[:page])
         format.turbo_stream { render turbo_stream: turbo_stream.replace("events", partial: "events", locals: { events: @events }) }
         format.html { redirect_to events_path, notice: "Event was successfully created." }
@@ -74,5 +88,8 @@ class EventsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def event_params
     params.require(:event).permit(:name, :date_scheduled)
+  end
+  def event_tracks
+    params.require(:tracks).permit(:name, :date_scheduled, :lectures)
   end
 end

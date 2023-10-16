@@ -36,4 +36,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_16_001254) do
     t.index ["events_id"], name: "index_tracks_on_events_id"
   end
 
+  add_foreign_key "lectures", "tracks", column: "tracks_id"
+  add_foreign_key "tracks", "events", column: "events_id"
 end
