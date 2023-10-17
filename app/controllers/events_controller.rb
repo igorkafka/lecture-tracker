@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: %i[ show edit update destroy ]
+  before_action :set_event, only: %i[ show edit update destroy organization ]
 
   # GET /events or /events.json
   def index
@@ -54,7 +54,9 @@ class EventsController < ApplicationController
       end
     end
   end
-
+  def organization
+  end
+  
   # PATCH/PUT /events/1 or /events/1.json
   def update
     @tracks = JSON.parse(params[:tracks])

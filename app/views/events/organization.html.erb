@@ -1,0 +1,12 @@
+<%= turbo_frame_tag "events" do %>
+<div class="content">
+<% @event.tracks.each do |track| %>
+    <h1><%= track.title %></h1>
+    <ul>
+    <% track.lectures.each do |lecture| %>
+          <li><%= lecture.time_scheduled.strftime('%H:%M') %> <%= lecture.title %></li>
+    <% end %>
+</ul>
+<% end  %>
+<% end %>
+</div>
