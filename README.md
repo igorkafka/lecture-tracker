@@ -3,7 +3,6 @@
 <p>Tenha o MySQL instalado </p>
 
 <h1>Arquivos de palestras</h1>
-seguindo esse modelo
 O formato do arquivo de envio para palestra é em .txt 
 <br>
 <br>
