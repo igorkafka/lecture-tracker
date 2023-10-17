@@ -27,17 +27,25 @@ class EventsController < ApplicationController
   # POST /events or /events.json
   def create
     @event = Event.new(event_params)
-    @tracks = JSON.parse(params[:tracks])
-    
-
+    tracks_json = JSON.parse(params[:tracks])
+    lectures = []
+    tracks_json.each do |track_data|
+      track_data['lectures'].each { |lecture_data|  lectures.push(Lecture.new(time_duration: lecture_data['time_duration'],title: lecture_data['title'])) }
+    end
+    begin 
+    @tracks = Track.build_tracks(lectures)
+    rescue => e
+      render :json => "#{e.message}"
+    end
+    byebug
     respond_to do |format|
       if @event.save
         @tracks.each do |track|
-          @new_track = Track.new(title: track['title'])
+          @new_track = Track.new(title: track.title)
           @new_track.event = @event
           if  @new_track.save          
-          track['lectures'].each do |lecture|
-            @lecture = Lecture.new(time_duration: lecture['time_duration'], time_scheduled: lecture['time_scheduled'],  title: lecture['title'])
+          track.lectures.each do |lecture|
+            @lecture = Lecture.new(time_duration: lecture.time_duration, time_scheduled: lecture.time_scheduled,  title: lecture.title)
             @lecture.track = @new_track
             @lecture.save
           end
@@ -48,7 +56,7 @@ class EventsController < ApplicationController
         format.html { redirect_to events_path, notice: "Event was successfully created." }
         format.json { render :show, status: :created, location: @event }
       else
-        @tracks = @tracks.to_json
+        @tracks = @tracks.as_json(:include =>:lectures).to_json
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end

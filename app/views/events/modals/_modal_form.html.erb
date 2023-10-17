@@ -4,7 +4,7 @@ data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
 <div class="modal-background"></div>
 <div class="modal-card">
   <header class="modal-card-head">
-    <p class="modal-card-title">Novo Evento</p>
+    <p class="modal-card-title">Evento</p>
     <button class="delete" data-action="click->modal#close" aria-label="close"></button>
   </header>
   <section class="modal-card-body">
@@ -12,6 +12,7 @@ data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
   </section>
   <footer class="modal-card-foot buttons  is-right">
     <button class="button" data-action="click->modal#close">Cancelar</button>
+    <button class="button is-success" data-action="click->modal#save">Salvar</button>
   </footer>
 </div>
 </div>

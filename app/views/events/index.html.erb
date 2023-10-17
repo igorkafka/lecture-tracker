@@ -9,7 +9,7 @@
       <%= form_tag(events_path, :method => "get")  do  %>
         <div class="field has-addons">
           <div class="control input-search">
-            <%= text_field_tag 'search', nil, class: 'input' ,placeholder: 'Digite o nome do evento'%>
+            <%= text_field_tag 'search', nil, class: 'input' ,value: params[:search], placeholder: 'Digite o nome do evento'%>
           </div>
           <div class="control">
             <a class="button is-info">

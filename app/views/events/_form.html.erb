@@ -87,7 +87,7 @@
                 <label class="label">Nome</label>
               </div>
               <div class="field-body">
-              <input  class="input lecture-input" :value="lecture.title"></input>
+              <input  class="input lecture-input" v-on:keyup="lecture.title = $event.target.value" :value="lecture.title"></input>
               </div>
               <button type="button" class="button is-danger" @click="removeLecture(track, lecture)">Excluir Palestra</button>
             </div>
@@ -100,7 +100,6 @@
     <div class="step-footer">
       <button data-step-action="prev" class="button is-info step-btn">Anterior</button>
       <button data-step-action="next" class="button is-info">Próximo</button>
-      <button data-step-action="finish" class="button is-success" data-action="click->modal#save">Finalizar</button>
     </div>
   </div>
   <% end %>
