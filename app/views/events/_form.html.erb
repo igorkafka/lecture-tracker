@@ -87,7 +87,7 @@
                 <label class="label">Nome</label>
               </div>
               <div class="field-body">
-              <input class="input lecture-input" :value="lecture.title" v-on:keyup="lecture.title = $event.target.value"></input>
+              <input  class="input lecture-input" :value="lecture.title"></input>
               </div>
               <button type="button" class="button is-danger" @click="removeLecture(track, lecture)">Excluir Palestra</button>
             </div>

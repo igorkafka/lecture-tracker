@@ -68,9 +68,13 @@ class LecturesController < ApplicationController
       logger.error "Bad file_data: #{@file_data.class.name}: #    
                 {@filename.inspect}"
     end
-    formatted_lectures = Lecture.parse_lectures(@lines.split(/\r\n/))
-    tracks = Track.build_tracks(formatted_lectures)
-    render :json => tracks.as_json(:include =>:lectures)
+    begin
+      formatted_lectures = Lecture.parse_lectures(@lines.split(/\r\n/))
+      tracks = Track.build_tracks(formatted_lectures)
+      render :json => tracks.as_json(:include =>:lectures)
+    rescue => e
+      render :json => "#{e.message}"
+    end
   end
   
 

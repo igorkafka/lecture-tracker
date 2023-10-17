@@ -7,6 +7,9 @@ class Lecture < ApplicationRecord
       match_data = line.match(/^(.*?)(\d{2}min)?$/)
       if match_data
         title, duration = match_data[1].strip, match_data[2] || "N/A"
+        if title =~ /\d/
+          raise "Não pode haver com número no títulos das palestras"
+        end
         lecture = Lecture.new(time_duration: duration, title: title)
         lectures << lecture
       end
