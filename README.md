@@ -44,5 +44,12 @@ Um mundo sem StackOverflow 30min
 <br>
 Otimizando CSS em aplicações Rails 30min
 <br>
+<h1>Gems</h1>
+gem "bulma-rails", "~> 0.9.4"
+<br>
+gem "sass-rails"
+<br>
+gem "will_paginate", "~> 4.0"
+<br>
 <h1>Teste</h1>
 Para execução de Testes execute o comando: rspec spec
