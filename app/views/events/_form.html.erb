@@ -75,8 +75,8 @@
                 <label class="label">Duração</label>
               </div>
               <div class="field-body">
-                <div class="select lecture-input">
-                <select v-on:change="lecture.time_duration = $event.target.value" :value="lecture.time_duration" class="input" name="" id="">
+                <div class="select">
+                <select v-on:input="lecture.time_duration = $event.target.value" :value="lecture.time_duration" class="input" name="" id="">
                   <option value="30">30 Minutos</option>
                   <option value="45">45 Minutos</option>
                   <option value="60">60 Minutos</option>
@@ -87,7 +87,7 @@
                 <label class="label">Nome</label>
               </div>
               <div class="field-body">
-              <input  class="input lecture-input" v-on:keyup="lecture.title = $event.target.value" :value="lecture.title"></input>
+              <input  class="input lecture-input" v-on:keydown="lecture.title = $event.target.value" :value="lecture.title"></input>
               </div>
               <button type="button" class="button is-danger" @click="removeLecture(track, lecture)">Excluir Palestra</button>
             </div>

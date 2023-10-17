@@ -73,15 +73,14 @@ const configVue = (initial_value) => {
     methods: {
       addTrack() {
         this.tracks.push({title: `Track ${letraDoAlfabeto(this.tracks.length)}`, lectures: [{}]});
-      },
-      removeTrack(track) {
-        book.isFav = !book.isFav;
-      },
-      alterTrack(track)  {
+        configInputNotAllowNumbers();
       },
       addLecture(track) {
         const index = this.tracks.indexOf(track);
         this.tracks[index].lectures.push({title: '',time_duration: 0});
+        setTimeout(() => {
+          configInputNotAllowNumbers();
+        }, 500);
       },
       deleteTrack(track) {
         const index = this.tracks.indexOf(track);
@@ -94,11 +93,16 @@ const configVue = (initial_value) => {
       },
       startManually() {
         this.tracks.push({title: `Track ${letraDoAlfabeto(this.tracks.length)}`, lectures: [{}]});
+        setTimeout(() => {
+          configInputNotAllowNumbers();
+        }, 500);
       },
       configFileUpload (event) {
             (this.sendLectureFile(event.target.files[0]))
 
       },
+       removeNumbersFromString() {
+      },      
      sendLectureFile  (file, tracks)  {
         var myformData = new FormData();      
         myformData.append('lecture_file',file);
@@ -166,7 +170,7 @@ function letraDoAlfabeto(indice) {
 
 const configInputNotAllowNumbers = () => {
   const inputElements = document.querySelectorAll('.lecture-input');
-
+  console.log(inputElements);
     // Loop through each input element and add the event listener
     inputElements.forEach(function(inputElement) {
       inputElement.addEventListener('input', function (event) {
