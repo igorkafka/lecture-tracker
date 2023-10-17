@@ -1,7 +1,6 @@
 
 class Lecture < ApplicationRecord
   belongs_to :track, class_name: "Track", foreign_key: "tracks_id"
-  validate :has_no_numbers
   def self.parse_lectures(list_lecture)
     lectures = []
     list_lecture.each do |line|
