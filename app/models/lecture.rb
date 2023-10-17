@@ -18,8 +18,6 @@ class Lecture < ApplicationRecord
   end
 
   def self.define_time_schedule_lectures(lectures, period_of_day)
-    DateTime.new(2013, 6, 29, 10, 15, 30)
-
     base_hour = period_of_day == 'morning' ?      DateTime.new(DateTime.now.year, DateTime.now.month, DateTime.now.day, 9, 0, 0)    : DateTime.new(DateTime.now.year, DateTime.now.month, DateTime.now.day, 13, 0, 0) 
     lectures.sort_by(&:time_duration).each do |lecture|
       lecture.time_scheduled = base_hour

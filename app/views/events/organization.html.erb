@@ -2,9 +2,18 @@
 <div class="content">
 <% @event.tracks.each do |track| %>
     <h1><%= track.title %></h1>
+    <% track.define_closests_lectures_lunch_and_networking() %>
+    <% byebug %>
     <ul>
-    <% track.lectures.each do |lecture| %>
+    <% track.lectures.sort_by(&:time_scheduled).each do |lecture, i| %>
           <li><%= lecture.time_scheduled.strftime('%H:%M') %> <%= lecture.title %></li>
+           <% if track.close_lecture_for_lunch.id == lecture.id %>
+                  <li>12:00 Almoço</li>
+           <% end %>
+           <%= i %>
+           <% if track.close_lecture_for_networking.id == lecture.id %>
+           <li>17:00 Almoço</li>
+    <% end %>
     <% end %>
 </ul>
 <% end  %>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get '/' => 'events#index'
   resources :lectures do
     collection do 
       post 'file'

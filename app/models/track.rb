@@ -2,6 +2,17 @@ class Track < ApplicationRecord
     belongs_to :event, class_name: "Event", foreign_key: "events_id"
     has_many :lectures, class_name: "Lecture", foreign_key: "tracks_id", dependent: :destroy
     accepts_nested_attributes_for :lectures, allow_destroy: true
+    attr_accessor :close_lecture_for_lunch, :close_lecture_for_networking
+    def define_closests_lectures_lunch_and_networking()
+      target_time_lunch =  Time.new(2023, 10, 17, 12, 0, 0)
+      target_time_networking =  Time.new(2023, 10, 17, 17, 0, 0)
+      @close_lecture_for_lunch = lectures.min_by { |lt| time_difference_between_lectures(target_time_lunch, lt) }
+      @close_lecture_for_networking = lectures.min_by { |lt| time_difference_between_lectures(target_time_networking, lt) }
+    end
+
+    private def time_difference_between_lectures(target_time, lt)
+      (lt.time_scheduled.hour - target_time.hour).abs * 60 + (lt.time_scheduled.min - target_time.min).abs
+    end  
 
     def self.build_tracks(lectures)
              knapsack_lectures = ->(lectures, i){
