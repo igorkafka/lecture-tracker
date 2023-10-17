@@ -4,7 +4,8 @@
 
 <h1>Arquivos de palestras</h1>
 seguindo esse modelo
-O formato do arquivo de envio para palestra e em .txt 
+O formato do arquivo de envio para palestra é em .txt 
+<br>
 <br>
 Diminuindo tempo de execução de testes em aplicações Rails enterprise 60min
 <br>
