@@ -61,14 +61,16 @@ class LecturesController < ApplicationController
     file_data = params[:lecture_file]
 
     if file_data.respond_to?(:read)
-      @lines = file_data.read
-    elsif file_data.respond_to?(:path)
+      @lines = file_data.read.force_encoding('UTF-8')
+    elsif file_data.respond_to?(:path,  encoding: 'UTF-8')
       @lines = File.read(file_data.path)
     else
       logger.error "Bad file_data: #{@file_data.class.name}: #    
                 {@filename.inspect}"
     end
     formatted_lectures = Lecture.parse_lectures(@lines.split(/\r\n/))
+    tracks = Track.build_tracks(formatted_lectures)
+    render :json => tracks.as_json(:include =>:lectures)
   end
   
 

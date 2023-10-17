@@ -7,14 +7,20 @@ import * as Vue from "vue"
 
 export default class extends Controller {
   connect() {
-    console.log(document.getElementById('event_date_scheduled'));
   }
 
   open() {
     configJquerySteps();
     configCalendar();
-    configFileUpload();
-    configVue();
+    const domTracksHiddenValue = document.getElementById('tracks_render').value;
+    let initial_value;
+    if (domTracksHiddenValue == "[]") {
+      initial_value = []
+    }
+    else {
+      initial_value = JSON.parse(domTracksHiddenValue);
+    }
+    configVue(initial_value);
     document.getElementsByClassName("modal")[0].classList.add("is-active");
   }
 
@@ -26,16 +32,6 @@ export default class extends Controller {
   }
 }
 
-const configFileUpload = () => {
-  const fileInput = document.querySelector('#file-lecture[type=file]');
-  fileInput.onchange = () => {
-    if (fileInput.files.length > 0) {
-      const fileName = document.querySelector('#file-lecture-name');
-      fileName.textContent = fileInput.files[0].name;
-      sendLectureFile(fileInput.files[0])
-    }
-  }
-}
 
 const configCalendar = () => {
   const options = {
@@ -66,41 +62,11 @@ const configJquerySteps = () => {
   });
 }
 
-const sendLectureFile = (file) => {
-  var myformData = new FormData();      
-  myformData.append('lecture_file',file);
-
-  $.ajax({
-    url: "/lectures/file",
-    type: "POST",
-    headers: {
-      Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
-      "X-CSRF-Token": document.querySelector("meta[name=csrf-token]")?.getAttribute("content"),
-    },
-    beforeSend(xhr, options) {
-      options.data = myformData;
-      return true;
-    },
-    success: response => {
-      if (response.success) {
-        alert("File uploaded successfully");
-      }
-      else {
-        alert(response.errors.join("<br>"));
-      }
-    },
-    error: () => {
-      alert("ajax send error");
-    }
-  });
-}
-
-const configVue = () => {
+const configVue = (initial_value) => {
   const app = Vue.createApp({
     data() {
       return {
-        tracks: []
+        tracks: initial_value
       }
     },
     methods: {
@@ -109,12 +75,6 @@ const configVue = () => {
       },
       removeTrack(track) {
         book.isFav = !book.isFav;
-        
-        // if (book.isFav) {
-        //   book.isFav = false;
-        // } else {
-        //   book.isFav = true;
-        // }
       },
       alterTrack(track)  {
       },
@@ -127,12 +87,45 @@ const configVue = () => {
         const index = this.tracks.indexOf(track);
         this.tracks.splice(index, 1);
       },
-      removeLecture(track) {
+      removeLecture(track, lecture) {
         const index = this.tracks.indexOf(track);
-        this.tracks[index].lectures.splice(index, 1); // 2nd parameter means remove one item only
+         const indexLecture=  this.tracks[index].lectures.indexOf(lecture);
+         this.tracks[index].lectures.splice(index, 1);
       },
       startManually() {
+        console.log(this.tracks);
         this.tracks.push({title: `Track ${letraDoAlfabeto(this.tracks.length)}`, lectures: [{}]});
+      },
+      configFileUpload (event) {
+           alert('teste');
+            const fileName = document.querySelector('#file-lecture-name');
+            fileName.textContent = event.target.files[0].name
+            console.log(this.sendLectureFile(event.target.files[0]));
+      },
+     sendLectureFile  (file, tracks)  {
+        var myformData = new FormData();      
+        myformData.append('lecture_file',file);
+      
+        $.ajax({
+          url: "/lectures/file",
+          type: "POST",
+          headers: {
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector("meta[name=csrf-token]")?.getAttribute("content"),
+          },
+          beforeSend(xhr, options) {
+            options.data = myformData;
+            return true;
+          },
+          success: response => {
+           this.tracks = response.filter(x => x != null);;
+            return response;
+          },
+          error: () => {
+            alert("ajax send error");
+          }
+        });
       }
     },
     computed: {
