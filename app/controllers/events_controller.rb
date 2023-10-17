@@ -37,7 +37,6 @@ class EventsController < ApplicationController
     rescue => e
       render :json => "#{e.message}"
     end
-    byebug
     respond_to do |format|
       if @event.save
         @tracks.each do |track|

@@ -1,16 +1,17 @@
 
 class Lecture < ApplicationRecord
   belongs_to :track, class_name: "Track", foreign_key: "tracks_id"
+  validate :has_no_numbers
   def self.parse_lectures(list_lecture)
     lectures = []
     list_lecture.each do |line|
       match_data = line.match(/^(.*?)(\d{2}min)?$/)
       if match_data
         title, duration = match_data[1].strip, match_data[2] || "N/A"
+        lecture = Lecture.new(time_duration: duration, title: title)
         if title =~ /\d/
           raise "Não pode haver com número no títulos das palestras"
         end
-        lecture = Lecture.new(time_duration: duration, title: title)
         lectures << lecture
       end
     end
